@@ -73,13 +73,18 @@ var priorities = map[string]int32{
 
 func (this *SystemdJournalEntry) toGelf() *gelf.Message {
 	var extra = map[string]interface{}{
-		"Boot_id": this.Boot_id,
-		"Pid":     this.Pid,
-		"Uid":     this.Uid,
+		"_application_name": this.Syslog_identifier,
+		"_exe":              this.Exe,
+		"_cmdline":          this.Cmdline,
+		"_boot_id":          this.Boot_id,
+		"_pid":              this.Pid,
+		"_uid":              this.Uid,
+		"_gid":              this.Gid,
+		"_systemd_unit":     this.Systemd_unit,
 	}
 
 	// php-fpm refuses to fill identifier
-	facility := this.Syslog_identifier
+	facility := this.Syslog_facility
 	if "" == facility {
 		facility = this.Comm
 	}
